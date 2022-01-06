@@ -53,7 +53,8 @@ function addDebugButton () {
         var debug_li = document.createElement("li");
         var debug_a = document.createElement("a");
         var debug_href_att = document.createAttribute("href");
-        debug_href_att.value = current_url + "?debug=1";
+        var debug_url = getDebugURL();
+        debug_href_att.value = debug_url;
         debug_a.setAttributeNode(debug_href_att);
         debug_a.innerHTML = "Debug";
         debug_li.appendChild(debug_a);
@@ -93,11 +94,21 @@ function addCodeButton () {
 function goToCode () {
     console.log('code button clicked');
     console.log('reloading page to get code url...');
-    var current_url = window.location.href;
-    var debug_url = current_url + "?debug=1";
+    var debug_url = getDebugURL();
     GM_setValue ("debug_page_loaded", true);
     window.open(debug_url, '_blank').focus();
 };
+
+function getDebugURL() {
+    const current_url = new URL(window.location.href);
+    if(current_url.search.includes('preview=1')){
+        var debug_url = current_url + '&debug=1';
+    }
+    else {
+        var debug_url = current_url + '?debug=1';
+    }
+    return debug_url
+}
 
 function sortFirms () {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
