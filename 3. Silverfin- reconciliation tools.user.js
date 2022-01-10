@@ -108,7 +108,7 @@ function getDebugURL() {
         var debug_url = current_url + '?debug=1';
     }
     return debug_url
-}
+};
 
 function sortFirms () {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
