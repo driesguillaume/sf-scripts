@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name     3. Silverfin: reconciliation tools
+// @name     4. Silverfin: reconciliation tools
 // @match    http*://live.getsilverfin.com/f/*
 // @noframes
 // @grant    GM_setValue
@@ -101,7 +101,7 @@ function goToCode () {
 
 function getDebugURL() {
     const current_url = new URL(window.location.href);
-    if(current_url.search.includes('preview=1')){
+    if(current_url.search.includes('?')){
         var debug_url = current_url + '&debug=1';
     }
     else {
