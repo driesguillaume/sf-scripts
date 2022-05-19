@@ -30,6 +30,7 @@ var invisibleElementCheckTimer = setInterval (
         if(document.querySelector("#fintrax-debug-menu") == null){
             addInvisibleElement();
             sortFirms();
+            addPreviewButton();
             addDebugButton();
             addCodeButton();
         }
@@ -53,12 +54,29 @@ function addDebugButton () {
         var debug_li = document.createElement("li");
         var debug_a = document.createElement("a");
         var debug_href_att = document.createAttribute("href");
-        var debug_url = getDebugURL();
+        var debug_url = getButtonURL('debug');
         debug_href_att.value = debug_url;
         debug_a.setAttributeNode(debug_href_att);
         debug_a.innerHTML = "Debug";
         debug_li.appendChild(debug_a);
         document.querySelector("ul.nav.pull-left:not(.hidden-desktop)").appendChild(debug_li);
+    };
+};
+
+function addPreviewButton () {
+    var current_url = window.location.href;
+
+    //Preview button
+    if(document.querySelector("ul.nav.pull-left:not(.hidden-desktop)")){
+        var preview_li = document.createElement("li");
+        var preview_a = document.createElement("a");
+        var preview_href_att = document.createAttribute("href");
+        var preview_url = getButtonURL('preview');
+        preview_href_att.value = preview_url;
+        preview_a.setAttributeNode(preview_href_att);
+        preview_a.innerHTML = "Preview";
+        preview_li.appendChild(preview_a);
+        document.querySelector("ul.nav.pull-left:not(.hidden-desktop)").appendChild(preview_li);
     };
 };
 
@@ -94,21 +112,25 @@ function addCodeButton () {
 function goToCode () {
     console.log('code button clicked');
     console.log('reloading page to get code url...');
-    var debug_url = getDebugURL();
+    var debug_url = getButtonURL('debug');
     GM_setValue ("debug_page_loaded", true);
     window.open(debug_url, '_blank').focus();
 };
 
-function getDebugURL() {
-    const current_url = new URL(window.location.href);
-    if(current_url.search.includes('?')){
-        var debug_url = current_url + '&debug=1';
+function getButtonURL (button) {
+    const queryString = window.location.search;
+    var urlString = window.location.href.split('?')[0];
+    const urlParams = new URLSearchParams(queryString);
+    if (urlParams.has(button)){
+        urlParams.delete(button);
     }
     else {
-        var debug_url = current_url + '?debug=1';
+        urlParams.append(button, '1');
     }
-    return debug_url
+    console.log(urlParams.toString());
+    return urlString + '?' + urlParams.toString();
 };
+
 
 function sortFirms () {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
@@ -132,7 +154,7 @@ function sortFirms () {
     }
 };
 
-function addGlobalStyle(css) {
+function addGlobalStyle (css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
     if (!head) { return; }
