@@ -64,8 +64,6 @@ function addDebugButton () {
 };
 
 function addPreviewButton () {
-    var current_url = window.location.href;
-
     //Preview button
     if(document.querySelector("ul.nav.pull-left:not(.hidden-desktop)")){
         var preview_li = document.createElement("li");
@@ -81,8 +79,6 @@ function addPreviewButton () {
 };
 
 function addCodeButton () {
-    var current_url = window.location.href;
-
     //Code button
     if(document.querySelector("ul.nav.pull-left:not(.hidden-desktop)")){
         var code_li = document.createElement("li");

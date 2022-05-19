@@ -60,6 +60,7 @@ var invisibleElementCheckTimer = setInterval (
         if(document.querySelector("#fintrax-partner-menu") == null){
             addInvisibleElement();
             addPartnerButton();
+            addChangelogButton();
         }
     }, 300 // check every 300ms for invisible element
 );
@@ -82,6 +83,35 @@ function addPartnerButton () {
         partner_a.innerHTML = "Live";
         partner_li.appendChild(partner_a);
         document.querySelector("ul.nav").appendChild(partner_li);
+    }
+};
+
+function addChangelogButton () {
+    //Changelog button
+    if(document.querySelector("ul.nav")){
+        var changelog_li = document.createElement("li");
+        var changelog_a = document.createElement("a");
+        var changelog_href_att = document.createAttribute("href");
+        var changelog_url = getChangelogURL();
+        changelog_href_att.value = changelog_url;
+        changelog_a.setAttributeNode(changelog_href_att);
+        changelog_a.innerHTML = "Changelog";
+        changelog_li.appendChild(changelog_a);
+        document.querySelector("ul.nav").appendChild(changelog_li);
+    };
+};
+
+function getChangelogURL () {
+    var url = window.location.href.split('/');
+    var location = url.pop();
+    console.log(url);
+    console.log(location);
+
+    if (location.includes('edit')){
+        return url.join('/') + '/changelog';
+    }
+    else {
+        return url.join('/') + '/edit';
     }
 };
 
