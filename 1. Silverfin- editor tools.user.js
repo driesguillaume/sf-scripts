@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name     1. Silverfin: editor tools
 // @match    http*://live.getsilverfin.com/f/*/edit*
+// @match    http*://live.getsilverfin.com/f/*/changelog*
 // @match    http*://live.getsilverfin.com/partners/*
 // @noframes
 // @grant    GM_setValue
