@@ -18,12 +18,12 @@ $(document).ready(function() {
 function sortFirms () {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
     var firmsLst  = $('select[id="authorized_firm_id"]');
-    var itemsToSort = firmsLst.find ("option");
-    var sortedItems = itemsToSort.sort (sortByLinkTextAscending)
+    var itemsToSort = firmsLst.find("option");
+    var sortedItems = itemsToSort.sort(sortByLinkTextAscending);
     sortedItems.appendTo (firmsLst);
     function sortByLinkTextAscending (nodeA, nodeB) {
-        var valA_Text  = $(nodeA).text ().trim ();
-        var valB_Text  = $(nodeB).text ().trim ();
+        var valA_Text  = $(nodeA).text().trim();
+        var valB_Text  = $(nodeB).text().trim();
 
         if(valA_Text == "Fintrax Dev" || valA_Text == "Fintrax Demo"){
             return -1;
@@ -32,10 +32,10 @@ function sortFirms () {
             return 1;
         }
         else {
-            return valA_Text.localeCompare (valB_Text, 'en', {sensitivity: 'base'} );
-        }
-    }
+            return valA_Text.localeCompare (valB_Text, 'en', {sensitivity: 'base'});
+        };
+    };
     // change default selected option to Fintrax Dev
-    var fintraxDevOption = $('option[value="14120"]')
-    fintraxDevOption.prop('selected', true).change()
+    var fintraxDevOption = $('option[value="14120"]');
+    fintraxDevOption.prop('selected', true).change();
 };
