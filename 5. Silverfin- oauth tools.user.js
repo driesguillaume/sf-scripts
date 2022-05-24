@@ -35,4 +35,7 @@ function sortFirms () {
             return valA_Text.localeCompare (valB_Text, 'en', {sensitivity: 'base'} );
         }
     }
+    // change default selected option to Fintrax Dev
+    var fintraxDevOption = $('option[value="14120"]')
+    fintraxDevOption.prop('selected', true).change()
 };
