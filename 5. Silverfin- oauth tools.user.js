@@ -11,17 +11,17 @@
 
 $(document).ready(function() {
     sortFirms();
-    console.log( "Sort finished" );
+    console.log("Sort finished");
 });
 
 
-function sortFirms () {
+function sortFirms() {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
     var firmsLst  = $('select[id="authorized_firm_id"]');
     var itemsToSort = firmsLst.find("option");
     var sortedItems = itemsToSort.sort(sortByLinkTextAscending);
-    sortedItems.appendTo (firmsLst);
-    function sortByLinkTextAscending (nodeA, nodeB) {
+    sortedItems.appendTo(firmsLst);
+    function sortByLinkTextAscending(nodeA, nodeB) {
         var valA_Text  = $(nodeA).text().trim();
         var valB_Text  = $(nodeB).text().trim();
 

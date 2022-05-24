@@ -11,7 +11,7 @@
 
 addGlobalStyle('@media screen and (max-width: 1200px) { .nav-collapse, .nav-collapse.collapse {overflow: hidden; overflow-x: hidden; overflow-y: hidden; height: 0;} .navbar .btn-navbar {display: block;} .hidden-desktop {display: inherit !important;}}');
 
-var debug_page_loaded = GM_getValue ("debug_page_loaded", false);
+var debug_page_loaded = GM_getValue("debug_page_loaded", false);
 if(debug_page_loaded){
     console.log('getting code url...');
     var codeURLCheckTimer = setInterval(function() {
@@ -25,8 +25,8 @@ if(debug_page_loaded){
     GM_setValue ("debug_page_loaded", false);
 };
 
-var invisibleElementCheckTimer = setInterval (
-    function () {
+var invisibleElementCheckTimer = setInterval(
+    function() {
         if(document.querySelector("#fintrax-debug-menu") == null){
             addInvisibleElement();
             sortFirms();
@@ -37,7 +37,7 @@ var invisibleElementCheckTimer = setInterval (
     }, 300 // check every 300ms for invisible element
 );
 
-function addInvisibleElement () {
+function addInvisibleElement() {
     //Invisible element
     var invis_a = document.createElement("a");
     var invis_id_att = document.createAttribute("id");
@@ -46,7 +46,7 @@ function addInvisibleElement () {
     document.querySelector("body").appendChild(invis_a);
 };
 
-function addDebugButton () {
+function addDebugButton() {
     var current_url = window.location.href;
 
     //Debug button
@@ -63,7 +63,7 @@ function addDebugButton () {
     };
 };
 
-function addPreviewButton () {
+function addPreviewButton() {
     //Preview button
     if(document.querySelector("ul.nav.pull-left:not(.hidden-desktop)")){
         var preview_li = document.createElement("li");
@@ -78,7 +78,7 @@ function addPreviewButton () {
     };
 };
 
-function addCodeButton () {
+function addCodeButton() {
     //Code button
     if(document.querySelector("ul.nav.pull-left:not(.hidden-desktop)")){
         var code_li = document.createElement("li");
@@ -105,7 +105,7 @@ function addCodeButton () {
     }
 };
 
-function goToCode () {
+function goToCode() {
     console.log('code button clicked');
     console.log('reloading page to get code url...');
     var debug_url = getButtonURL('debug');
@@ -113,7 +113,7 @@ function goToCode () {
     window.open(debug_url, '_blank').focus();
 };
 
-function getButtonURL (button) {
+function getButtonURL(button) {
     const queryString = window.location.search;
     var urlString = window.location.href.split('?')[0];
     const urlParams = new URLSearchParams(queryString);
@@ -128,15 +128,15 @@ function getButtonURL (button) {
 };
 
 
-function sortFirms () {
+function sortFirms() {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
     var firmsLst  = $("ul.dropdown-menu.sf-overflow-scroll");
-    var itemsToSort = firmsLst.find ("li");
-    var sortedItems = itemsToSort.sort (sortByLinkTextAscending)
-    sortedItems.appendTo (firmsLst);
-    function sortByLinkTextAscending (nodeA, nodeB) {
-        var valA_Text  = $(nodeA).find ("a").text ().trim ();
-        var valB_Text  = $(nodeB).find ("a").text ().trim ();
+    var itemsToSort = firmsLst.find("li");
+    var sortedItems = itemsToSort.sort(sortByLinkTextAscending)
+    sortedItems.appendTo(firmsLst);
+    function sortByLinkTextAscending(nodeA, nodeB) {
+        var valA_Text  = $(nodeA).find("a").text().trim();
+        var valB_Text  = $(nodeB).find("a").text().trim();
 
         if(valA_Text == "Fintrax Dev" || valA_Text == "Fintrax Demo"){
             return -1;
@@ -145,12 +145,12 @@ function sortFirms () {
             return 1;
         }
         else {
-            return valA_Text.localeCompare (valB_Text, 'en', {sensitivity: 'base'} );
-        }
-    }
+            return valA_Text.localeCompare(valB_Text, 'en', {sensitivity: 'base'});
+        };
+    };
 };
 
-function addGlobalStyle (css) {
+function addGlobalStyle(css) {
     var head, style;
     head = document.getElementsByTagName('head')[0];
     if (!head) { return; }
