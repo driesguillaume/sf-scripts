@@ -132,7 +132,7 @@ function sortFirms() {
     var $ = jQuery;  //  The page loads jQuery (and we are in grant none mode), but doesn't set `$`.
     var firmsLst  = $("ul.dropdown-menu.sf-overflow-scroll");
     var itemsToSort = firmsLst.find("li");
-    var sortedItems = itemsToSort.sort(sortByLinkTextAscending)
+    var sortedItems = itemsToSort.sort(sortByLinkTextAscending).each(removeVGDLink);
     sortedItems.appendTo(firmsLst);
     function sortByLinkTextAscending(nodeA, nodeB) {
         var valA_Text  = $(nodeA).find("a").text().trim();
@@ -146,6 +146,15 @@ function sortFirms() {
         }
         else {
             return valA_Text.localeCompare(valB_Text, 'en', {sensitivity: 'base'});
+        };
+    };
+    function removeVGDLink(element) {
+        var a_elem = $(this).find("a");
+        var vgd_href = a_elem.attr("href");
+        if(vgd_href && vgd_href.includes("vgd.")) {
+            var live_href = vgd_href.replace("vgd.", "live.");
+            a_elem.attr("href", live_href);
+            console.log("replaced 'vgd.' with 'live.' in firm link")
         };
     };
 };
