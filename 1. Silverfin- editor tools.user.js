@@ -81,7 +81,7 @@ function addPartnerButton () {
         var partner_li = document.createElement("li");
         var partner_a = document.createElement("a");
         partner_a.addEventListener ("click", goToPartner, false);
-        partner_a.innerHTML = "Live";
+        partner_a.innerHTML = "Partners";
         partner_li.appendChild(partner_a);
         document.querySelector("ul.nav").appendChild(partner_li);
     }
