@@ -30,6 +30,7 @@ var invisibleElementCheckTimer = setInterval(
         if(document.querySelector("#fintrax-debug-menu") == null){
             addInvisibleElement();
             sortFirms();
+            addSearchFirms();
             addPreviewButton();
             addDebugButton();
             addCodeButton();
@@ -158,6 +159,49 @@ function sortFirms() {
         };
     };
 };
+
+
+function addSearchFirms() {
+    const $ = jQuery;
+    const firmsLst = $("ul.dropdown-menu.sf-overflow-scroll");
+
+    if (!firmsLst.length || $("#firm-search-input").length) return;
+
+    const searchInputLI = $('<li>', {
+        style: 'padding: 5px 10px;'
+    });
+
+    const searchInput = $('<input>', {
+        type: 'text',
+        id: 'firm-search-input',
+        class: 'sf-input tw-w-full',
+        placeholder: 'Search firms...'
+    });
+
+    // Prevent the dropdown from closing when clicking inside the input
+    searchInput.on('click mousedown', function (e) {
+        e.stopPropagation();
+    });
+
+    searchInputLI.append(searchInput);
+    firmsLst.prepend(searchInputLI);
+
+    searchInput.on('keyup', function () {
+        const searchTerm = $(this).val().toLowerCase();
+
+        firmsLst.find("li").not(searchInputLI).each(function () {
+            const firmName = $(this).text().toLowerCase();
+            const isHeader = $(this).hasClass("dropdown-header");
+
+            if (isHeader || firmName.includes(searchTerm)) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+};
+
 
 function addGlobalStyle(css) {
     var head, style;
