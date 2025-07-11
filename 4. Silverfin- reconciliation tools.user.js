@@ -10,6 +10,8 @@
 'use strict';
 
 addGlobalStyle('@media screen and (max-width: 1200px) { .nav-collapse, .nav-collapse.collapse {overflow: hidden; overflow-x: hidden; overflow-y: hidden; height: 0;} .navbar .btn-navbar {display: block;} .hidden-desktop {display: inherit !important;}}');
+addGlobalStyle('ul.dropdown-menu.sf-overflow-scroll li.selected > a {background-color: #0077b3; !important; color:#FFF !important;}');
+
 
 var debug_page_loaded = GM_getValue("debug_page_loaded", false);
 if(debug_page_loaded){
@@ -134,6 +136,7 @@ function sortFirms() {
     var firmsLst  = $("ul.dropdown-menu.sf-overflow-scroll");
     var itemsToSort = firmsLst.find("li");
     var sortedItems = itemsToSort.sort(sortByLinkTextAscending).each(removeVGDLink);
+    sortedItems.each(addAliases);
     sortedItems.appendTo(firmsLst);
     function sortByLinkTextAscending(nodeA, nodeB) {
         var valA_Text  = $(nodeA).find("a").text().trim();
@@ -178,7 +181,7 @@ function addSearchFirms() {
         placeholder: 'Search firms...'
     });
 
-    // Prevent the dropdown from closing when clicking inside the input
+    // Prevent dropdown from closing
     searchInput.on('click mousedown', function (e) {
         e.stopPropagation();
     });
@@ -186,8 +189,9 @@ function addSearchFirms() {
     searchInputLI.append(searchInput);
     firmsLst.prepend(searchInputLI);
 
-    searchInput.on('keyup', function () {
+    searchInput.on('keyup', function (e) {
         const searchTerm = $(this).val().toLowerCase();
+        let firstVisible = null;
 
         firmsLst.find("li").not(searchInputLI).each(function () {
             const firmName = $(this).text().toLowerCase();
@@ -195,12 +199,46 @@ function addSearchFirms() {
 
             if (isHeader || firmName.includes(searchTerm)) {
                 $(this).show();
+
+                // Alleen de eerste zichtbare niet-header selecteren
+                if (!isHeader && firstVisible === null) {
+                    firstVisible = this;
+                }
             } else {
                 $(this).hide();
             }
         });
+
+        // Alle geselecteerde klassen verwijderen
+        firmsLst.find("li").removeClass("selected");
+
+        // Markeer de eerste zichtbare
+        if (firstVisible) {
+            $(firstVisible).addClass("selected");
+        }
+
+        // Enter key: klik op eerste zichtbare
+        if (e.key === "Enter" && firstVisible) {
+            $(firstVisible).find("a")[0].click();
+        }
     });
-};
+}
+
+(function focusSearchInputOnDropdownOpen() {
+    console.log("focusSearchInputOnDropdownOpen loaded");
+    const $ = jQuery;
+
+    $(document).on('click', '.firms', function () {
+        console.log("firms clicked");
+        // Kleine delay om zeker te zijn dat het menu in de DOM staat
+        setTimeout(() => {
+            const input = $('#firm-search-input');
+            if (input.length) {
+                input.focus();
+            }
+        }, 100);
+    });
+})();
 
 
 function addGlobalStyle(css) {
@@ -211,4 +249,41 @@ function addGlobalStyle(css) {
     style.type = 'text/css';
     style.innerHTML = css;
     head.appendChild(style);
+};
+
+function addAliases(element){
+    var element_Text = $(this).find("a").text().trim();
+    var firm_name = "";
+    switch (element_Text) {
+        case 'Blueground':
+            firm_name = 'Blueground (Fidiaz)';
+            break;
+        case 'Abbeloos Schinkels':
+            firm_name = 'Abbeloos Schinkels (Cica)';
+            break;
+        case 'PwC Business Services':
+            firm_name = 'PwC Business Services (EIT Digital)';
+            break;
+        case 'Fiscaldy':
+            firm_name = 'Fiscaldy (AMPE)';
+            break;
+        case 'De Vlieger & CO':
+            firm_name = 'De Vlieger & CO (Buyse)';
+            break;
+        case 'D&D Fisc':
+            firm_name = 'D&D Fisc (dndfisc)';
+            break;
+        case 'JCV IMMO':
+            firm_name = 'JCV IMMO (ACEG)';
+            break;
+        case 'De Luyker Services':
+            firm_name = 'De Luyker Services (Heidi Hemelsoet)';
+            break;
+        case 'Boekhouding Tania Coudeville':
+            firm_name = 'Boekhouding Tania Coudeville (Esperto)';
+            break;
+        default:
+            firm_name = element_Text;
+    }
+    $(this).find("a").html(firm_name);
 };
