@@ -181,7 +181,6 @@ function addSearchFirms() {
         placeholder: 'Search firms...'
     });
 
-    // Prevent dropdown from closing
     searchInput.on('click mousedown', function (e) {
         e.stopPropagation();
     });
@@ -189,9 +188,51 @@ function addSearchFirms() {
     searchInputLI.append(searchInput);
     firmsLst.prepend(searchInputLI);
 
+    let selectedIdx = -1;
+
+    function updateSelection(items, direction) {
+        if (!items.length) return;
+
+        selectedIdx += direction;
+
+        if (selectedIdx < 0) selectedIdx = items.length - 1;
+        if (selectedIdx >= items.length) selectedIdx = 0;
+
+        items.removeClass("selected");
+        $(items[selectedIdx]).addClass("selected");
+
+        // Scroll into view
+        items[selectedIdx].scrollIntoView({ block: "nearest" });
+    }
+
+    searchInput.on('keydown', function (e) {
+        const visibleItems = firmsLst.find("li:visible:not(:first)").not('.dropdown-header');
+
+        switch (e.key) {
+            case "ArrowDown":
+                e.preventDefault();
+                updateSelection(visibleItems, 1);
+                break;
+
+            case "ArrowUp":
+                e.preventDefault();
+                updateSelection(visibleItems, -1);
+                break;
+
+            case "Enter":
+                e.preventDefault();
+                if (selectedIdx >= 0 && visibleItems[selectedIdx]) {
+                    $(visibleItems[selectedIdx]).find("a")[0].click();
+                }
+                break;
+        }
+    });
+
     searchInput.on('keyup', function (e) {
+        if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) return;
+
         const searchTerm = $(this).val().toLowerCase();
-        let firstVisible = null;
+        selectedIdx = -1;
 
         firmsLst.find("li").not(searchInputLI).each(function () {
             const firmName = $(this).text().toLowerCase();
@@ -199,27 +240,17 @@ function addSearchFirms() {
 
             if (isHeader || firmName.includes(searchTerm)) {
                 $(this).show();
-
-                // Alleen de eerste zichtbare niet-header selecteren
-                if (!isHeader && firstVisible === null) {
-                    firstVisible = this;
-                }
             } else {
                 $(this).hide();
             }
         });
 
-        // Alle geselecteerde klassen verwijderen
-        firmsLst.find("li").removeClass("selected");
+        const visibleItems = firmsLst.find("li:visible:not(:first)").not('.dropdown-header');
 
-        // Markeer de eerste zichtbare
-        if (firstVisible) {
-            $(firstVisible).addClass("selected");
-        }
-
-        // Enter key: klik op eerste zichtbare
-        if (e.key === "Enter" && firstVisible) {
-            $(firstVisible).find("a")[0].click();
+        if (visibleItems.length > 0) {
+            selectedIdx = 0;
+            visibleItems.removeClass("selected");
+            $(visibleItems[0]).addClass("selected");
         }
     });
 }
@@ -281,6 +312,9 @@ function addAliases(element){
             break;
         case 'Boekhouding Tania Coudeville':
             firm_name = 'Boekhouding Tania Coudeville (Esperto)';
+            break;
+        case 'd&p':
+            firm_name = 'd&p (Decupere)';
             break;
         default:
             firm_name = element_Text;
