@@ -284,40 +284,20 @@ function addGlobalStyle(css) {
 
 function addAliases(element){
     var element_Text = $(this).find("a").text().trim();
-    var firm_name = "";
-    switch (element_Text) {
-        case 'Blueground':
-            firm_name = 'Blueground (Fidiaz)';
-            break;
-        case 'Abbeloos Schinkels':
-            firm_name = 'Abbeloos Schinkels (Cica)';
-            break;
-        case 'PwC Business Services':
-            firm_name = 'PwC Business Services (EIT Digital)';
-            break;
-        case 'Fiscaldy':
-            firm_name = 'Fiscaldy (AMPE)';
-            break;
-        case 'De Vlieger & CO':
-            firm_name = 'De Vlieger & CO (Buyse)';
-            break;
-        case 'D&D Fisc':
-            firm_name = 'D&D Fisc (dndfisc)';
-            break;
-        case 'JCV IMMO':
-            firm_name = 'JCV IMMO (ACEG)';
-            break;
-        case 'De Luyker Services':
-            firm_name = 'De Luyker Services (Heidi Hemelsoet)';
-            break;
-        case 'Boekhouding Tania Coudeville':
-            firm_name = 'Boekhouding Tania Coudeville (Esperto)';
-            break;
-        case 'd&p':
-            firm_name = 'd&p (Decupere)';
-            break;
-        default:
-            firm_name = element_Text;
+    const firm_aliases = {
+        "Abbeloos Schinkels": "Abbeloos Schinkels (Cica)",
+        "Blueground": "Blueground (Fidiaz)",
+        "Bureau Mignolet": "Bureau Mignolet (Finvision)",
+        "Boekhouding Tania Coudeville": "Boekhouding Tania Coudeville (Esperto)",
+        "Boekhoudkantoor Marien": "Boekhoudkantoor Marien (Fiscalier)",
+        "D&D Fisc": "D&D Fisc (dndfisc)",
+        "d&p": "d&p (Decupere)",
+        "De Luyker Services": "De Luyker Services (Heidi Hemelsoet)",
+        "De Vlieger & CO": "De Vlieger & CO (Buyse)",
+        "Fiscaldy": "Fiscaldy (AMPE)",
+        "JCV IMMO": "JCV IMMO (ACEG)",
+        "PwC Business Services": "PwC Business Services (EIT Digital)"
     }
+    const firm_name = element_Text in firm_aliases ? firm_aliases[element_Text] : element_Text;
     $(this).find("a").html(firm_name);
 };
