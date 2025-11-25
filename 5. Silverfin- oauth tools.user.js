@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name     5. Silverfin: oauth tools
 // @match    http*://live.getsilverfin.com/oauth/authorize/*
+// @match    http*://live.getsilverfin.com/f/*/oauth/authorize/*
 // @noframes
 // @grant    GM_setValue
 // @grant    GM_getValue
