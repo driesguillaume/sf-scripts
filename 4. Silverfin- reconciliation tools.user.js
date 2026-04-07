@@ -289,6 +289,7 @@ function addAliases(element){
         "Blueground": "Blueground (Fidiaz)",
         "Bureau Mignolet": "Bureau Mignolet (Finvision)",
         "Boekhouding Tania Coudeville": "Boekhouding Tania Coudeville (Esperto)",
+        "ESP": "ESP (Esperto)",
         "Boekhoudkantoor Marien": "Boekhoudkantoor Marien (Fiscalier)",
         "D&D Fisc": "D&D Fisc (dndfisc)",
         "d&p": "d&p (Decupere)",
