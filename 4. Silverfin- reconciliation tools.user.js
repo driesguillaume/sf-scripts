@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name     4. Silverfin: reconciliation tools
 // @match    http*://live.getsilverfin.com/f/*
+// @match    http*://connect.getsilverfin.com/f/*
 // @noframes
 // @grant    GM_setValue
 // @grant    GM_getValue
